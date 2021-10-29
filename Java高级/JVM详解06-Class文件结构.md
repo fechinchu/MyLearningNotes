@@ -110,8 +110,6 @@ Class文件的结构并不是一成不变的,但是其基本结构和框架是�
 | u2             | attributes_count    | 属性计数器             | 2个字节 | 1                     |
 | attribute_info | attributes          | 属性表                 | n个字节 | attributes_count      |
 
-# 
-
 ![image-20211027150736501](https://fechin-picgo.oss-cn-shanghai.aliyuncs.com/PicGo/image-20211027150736501.png)
 
 ## 2.2.魔数
@@ -349,4 +347,275 @@ methods:指向常量池索引集合,完整描述了每个方法的签名;
 属性表集合比较复杂,可以参考官网https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-4.html#jvms-4.7
 
 ![image-20211027224525864](https://fechin-picgo.oss-cn-shanghai.aliyuncs.com/PicGo/image-20211027224525864.png)
+
+# 3.`Javap`指令
+
+~~~shell
+➜  ~ javap -help
+用法: javap <options> <classes>
+其中, 可能的选项包括:
+  -help  --help  -?        输出此用法消息
+  -version                 版本信息
+  -v  -verbose             输出附加信息
+  -l                       输出行号和本地变量表
+  -public                  仅显示公共类和成员
+  -protected               显示受保护的/公共类和成员
+  -package                 显示程序包/受保护的/公共类
+                           和成员 (默认)
+  -p  -private             显示所有类和成员
+  -c                       对代码进行反汇编
+  -s                       输出内部类型签名
+  -sysinfo                 显示正在处理的类的
+                           系统信息 (路径, 大小, 日期, MD5 散列)
+  -constants               显示最终常量
+  -classpath <path>        指定查找用户类文件的位置
+  -cp <path>               指定查找用户类文件的位置
+  -bootclasspath <path>    覆盖引导类文件的位置
+~~~
+
+最全的显示方式`javap -v -p xxxxx.class`;
+
+javap字节码文件解析如下
+
+~~~shell
+Classfile /C:/Users/songhk/Desktop/2/JavapTest.class    //字节码文件所属的路径
+  Last modified 2020-9-7; size 1358 bytes		//最后修改时间，字节码文件的大小
+  MD5 checksum 526b4a845e4d98180438e4c5781b7e88         //MD5散列值
+  Compiled from "JavapTest.java"			//源文件的名称
+public class com.atguigu.java1.JavapTest
+  minor version: 0					//副版本
+  major version: 52					//主版本
+  flags: ACC_PUBLIC, ACC_SUPER				//访问标识
+Constant pool:						//常量池
+   #1 = Methodref          #16.#46        // java/lang/Object."<init>":()V
+   #2 = String             #47            // java
+   #3 = Fieldref           #15.#48        // com/atguigu/java1/JavapTest.info:Ljava/lang/String;
+   #4 = Fieldref           #15.#49        // com/atguigu/java1/JavapTest.flag:Z
+   #5 = Fieldref           #15.#50        // com/atguigu/java1/JavapTest.num:I
+   #6 = Fieldref           #15.#51        // com/atguigu/java1/JavapTest.gender:C
+   #7 = Fieldref           #52.#53        // java/lang/System.out:Ljava/io/PrintStream;
+   #8 = Class              #54            // java/lang/StringBuilder
+   #9 = Methodref          #8.#46         // java/lang/StringBuilder."<init>":()V
+  #10 = Methodref          #8.#55         // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #11 = Methodref          #8.#56         // java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+  #12 = Methodref          #8.#57         // java/lang/StringBuilder.toString:()Ljava/lang/String;
+  #13 = Methodref          #58.#59        // java/io/PrintStream.println:(Ljava/lang/String;)V
+  #14 = String             #60            // www.atguigu.com
+  #15 = Class              #61            // com/atguigu/java1/JavapTest
+  #16 = Class              #62            // java/lang/Object
+  #17 = Utf8               num
+  #18 = Utf8               I
+  #19 = Utf8               flag
+  #20 = Utf8               Z
+  #21 = Utf8               gender
+  #22 = Utf8               C
+  #23 = Utf8               info
+  #24 = Utf8               Ljava/lang/String;
+  #25 = Utf8               COUNTS
+  #26 = Utf8               ConstantValue
+  #27 = Integer            1
+  #28 = Utf8               <init>
+  #29 = Utf8               ()V
+  #30 = Utf8               Code
+  #31 = Utf8               LineNumberTable
+  #32 = Utf8               LocalVariableTable
+  #33 = Utf8               this
+  #34 = Utf8               Lcom/atguigu/java1/JavapTest;
+  #35 = Utf8               (Z)V
+  #36 = Utf8               methodPrivate
+  #37 = Utf8               getNum
+  #38 = Utf8               (I)I
+  #39 = Utf8               i
+  #40 = Utf8               showGender
+  #41 = Utf8               ()C
+  #42 = Utf8               showInfo
+  #43 = Utf8               <clinit>
+  #44 = Utf8               SourceFile
+  #45 = Utf8               JavapTest.java
+  #46 = NameAndType        #28:#29        // "<init>":()V
+  #47 = Utf8               java
+  #48 = NameAndType        #23:#24        // info:Ljava/lang/String;
+  #49 = NameAndType        #19:#20        // flag:Z
+  #50 = NameAndType        #17:#18        // num:I
+  #51 = NameAndType        #21:#22        // gender:C
+  #52 = Class              #63            // java/lang/System
+  #53 = NameAndType        #64:#65        // out:Ljava/io/PrintStream;
+  #54 = Utf8               java/lang/StringBuilder
+  #55 = NameAndType        #66:#67        // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #56 = NameAndType        #66:#68        // append:(I)Ljava/lang/StringBuilder;
+  #57 = NameAndType        #69:#70        // toString:()Ljava/lang/String;
+  #58 = Class              #71            // java/io/PrintStream
+  #59 = NameAndType        #72:#73        // println:(Ljava/lang/String;)V
+  #60 = Utf8               www.atguigu.com
+  #61 = Utf8               com/atguigu/java1/JavapTest
+  #62 = Utf8               java/lang/Object
+  #63 = Utf8               java/lang/System
+  #64 = Utf8               out
+  #65 = Utf8               Ljava/io/PrintStream;
+  #66 = Utf8               append
+  #67 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #68 = Utf8               (I)Ljava/lang/StringBuilder;
+  #69 = Utf8               toString
+  #70 = Utf8               ()Ljava/lang/String;
+  #71 = Utf8               java/io/PrintStream
+  #72 = Utf8               println
+  #73 = Utf8               (Ljava/lang/String;)V
+#######################################字段表集合的信息################################################
+{						
+  private int num;				//字段名
+    descriptor: I				//字段描述符：字段的类型
+    flags: ACC_PRIVATE				//字段的访问标识
+
+  boolean flag;
+    descriptor: Z
+    flags:
+
+  protected char gender;
+    descriptor: C
+    flags: ACC_PROTECTED
+
+  public java.lang.String info;
+    descriptor: Ljava/lang/String;
+    flags: ACC_PUBLIC
+
+  public static final int COUNTS;
+    descriptor: I
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    ConstantValue: int 1				//常量字段的属性：ConstantValue
+
+#######################################方法表集合的信息################################################
+  public com.atguigu.java1.JavapTest();				//构造器1的信息		
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: ldc           #2                  // String java
+         7: putfield      #3                  // Field info:Ljava/lang/String;
+        10: return
+      LineNumberTable:
+        line 20: 0
+        line 18: 4
+        line 22: 10
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      11     0  this   Lcom/atguigu/java1/JavapTest;
+
+  private com.atguigu.java1.JavapTest(boolean);			//构造器2的信息	
+    descriptor: (Z)V
+    flags: ACC_PRIVATE
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: ldc           #2                  // String java
+         7: putfield      #3                  // Field info:Ljava/lang/String;
+        10: aload_0
+        11: iload_1
+        12: putfield      #4                  // Field flag:Z
+        15: return
+      LineNumberTable:
+        line 23: 0
+        line 18: 4
+        line 24: 10
+        line 25: 15
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      16     0  this   Lcom/atguigu/java1/JavapTest;
+            0      16     1  flag   Z
+
+  private void methodPrivate();
+    descriptor: ()V
+    flags: ACC_PRIVATE
+    Code:
+      stack=0, locals=1, args_size=1
+         0: return
+      LineNumberTable:
+        line 28: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       1     0  this   Lcom/atguigu/java1/JavapTest;
+
+  int getNum(int);
+    descriptor: (I)I
+    flags:
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: getfield      #5                  // Field num:I
+         4: iload_1
+         5: iadd
+         6: ireturn
+      LineNumberTable:
+        line 30: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       7     0  this   Lcom/atguigu/java1/JavapTest;
+            0       7     1     i   I
+
+  protected char showGender();
+    descriptor: ()C
+    flags: ACC_PROTECTED
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #6                  // Field gender:C
+         4: ireturn
+      LineNumberTable:
+        line 33: 0
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0       5     0  this   Lcom/atguigu/java1/JavapTest;
+
+  public void showInfo();				
+    descriptor: ()V				//方法描述符：方法的形参列表 、 返回值类型
+    flags: ACC_PUBLIC				//方法的访问标识
+    Code:					//方法的Code属性
+      stack=3, locals=2, args_size=1		//stack:操作数栈的最大深度   locals:局部变量表的长度  args_size：方法接收参数的个数
+   //偏移量 操作码	 操作数	
+	 0: bipush        10
+         2: istore_1
+         3: getstatic     #7                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         6: new           #8                  // class java/lang/StringBuilder
+         9: dup
+        10: invokespecial #9                  // Method java/lang/StringBuilder."<init>":()V
+        13: aload_0
+        14: getfield      #3                  // Field info:Ljava/lang/String;
+        17: invokevirtual #10                 // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+        20: iload_1
+        21: invokevirtual #11                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+        24: invokevirtual #12                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+        27: invokevirtual #13                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        30: return
+      //行号表：指名字节码指令的偏移量与java源程序中代码的行号的一一对应关系
+      LineNumberTable:
+        line 36: 0
+        line 37: 3
+        line 38: 30
+      //局部变量表：描述内部局部变量的相关信息
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+            0      31     0  this   Lcom/atguigu/java1/JavapTest;
+            3      28     1     i   I
+
+  static {};
+    descriptor: ()V
+    flags: ACC_STATIC
+    Code:
+      stack=1, locals=1, args_size=0
+         0: ldc           #14                 // String www.atguigu.com
+         2: astore_0
+         3: return
+      LineNumberTable:
+        line 15: 0
+        line 16: 3
+      LocalVariableTable:
+        Start  Length  Slot  Name   Signature
+}
+SourceFile: "JavapTest.java"			//附加属性：指名当前字节码文件对应的源程序文件名
+
+~~~
 
