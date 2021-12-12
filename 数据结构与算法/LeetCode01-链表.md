@@ -54,10 +54,10 @@ https://leetcode-cn.com/problems/middle-of-the-linked-list/
 class Solution {
     public ListNode middleNode(ListNode head) {
         //if(head == null) return null;这一行可以省略,因为题目提示头结点为head的非空单链表
-        ListNode quick = head;
+        ListNode fast = head;
         ListNode slow = head;
         while(fast != null && fast.next != null){
-            quick = quick.next.next;
+            fast = fast.next.next;
             slow = slow.next;
         }
       return slow;
